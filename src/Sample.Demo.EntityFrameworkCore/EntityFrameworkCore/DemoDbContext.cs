@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Sample.Demo.Localization;
 using Sample.Demo.Users;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
@@ -21,6 +22,10 @@ namespace Sample.Demo.EntityFrameworkCore
     public class DemoDbContext : AbpDbContext<DemoDbContext>
     {
         public DbSet<AppUser> Users { get; set; }
+
+        public DbSet<ApplicationLanguage> ApplicationLanguages { get; set; }
+
+        public DbSet<ApplicationLanguageText> ApplicationLanguageTexts { get; set; }
 
         /* Add DbSet properties for your Aggregate Roots / Entities here.
          * Also map them inside DemoDbContextModelCreatingExtensions.ConfigureDemo

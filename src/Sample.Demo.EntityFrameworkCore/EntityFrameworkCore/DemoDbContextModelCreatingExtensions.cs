@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
+using Sample.Demo.Localization;
+using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace Sample.Demo.EntityFrameworkCore
 {
@@ -17,6 +19,18 @@ namespace Sample.Demo.EntityFrameworkCore
             //    b.ConfigureByConvention(); //auto configure for the base class props
             //    //...
             //});
+
+            builder.Entity<ApplicationLanguage>(b =>
+            {
+                b.ToTable(DemoConsts.DbTablePrefix + "Languages");
+                b.ConfigureByConvention();
+            });
+
+            builder.Entity<ApplicationLanguageText>(b =>
+            {
+                b.ToTable(DemoConsts.DbTablePrefix + "LanguageTexts");
+                b.ConfigureByConvention();
+            });
         }
     }
 }
