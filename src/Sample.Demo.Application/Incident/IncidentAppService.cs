@@ -53,7 +53,7 @@ namespace Sample.Demo.Incident
         }
 
         [Authorize(DemoPermissions.Incidents.Create)]
-        public async Task<IncidentDto> CreateAsync(CreateIncidentDto input)
+        public async Task<IncidentDto> CreateAsync()
         {
             var guid = new Guid().ToString();
             var incident = await _incidentManager.CreateAsync(guid);

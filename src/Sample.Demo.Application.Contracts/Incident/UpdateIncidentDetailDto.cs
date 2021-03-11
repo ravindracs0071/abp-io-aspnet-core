@@ -6,6 +6,10 @@ namespace Sample.Demo.Incident
     public class UpdateIncidentDetailDto
     {
         [Required]
+        [StringLength(IncidentConsts.MaxIncidentNoLength)]
+        public string IncidentNo { get; set; }
+
+        [Required]
         [StringLength(IncidentConsts.MaxValueLength)]
         public string IncidentDescr { get; set; }
 

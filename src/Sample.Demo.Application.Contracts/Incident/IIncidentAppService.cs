@@ -11,7 +11,7 @@ namespace Sample.Demo.Incident
 
         Task<PagedResultDto<IncidentDto>> GetListAsync(GetIncidentListDto input);
 
-        Task<IncidentDto> CreateAsync(CreateIncidentDto input);
+        Task<IncidentDto> CreateAsync();
 
         Task DeleteAsync(int id);
     }

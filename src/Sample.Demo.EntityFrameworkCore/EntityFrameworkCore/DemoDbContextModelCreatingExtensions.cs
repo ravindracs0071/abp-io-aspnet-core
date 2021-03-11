@@ -35,7 +35,7 @@ namespace Sample.Demo.EntityFrameworkCore
 
             builder.Entity<IncidentMaster>(b =>
             {
-                b.ToTable(DemoConsts.DbTablePrefix + "IncidentManagers");
+                b.ToTable(DemoConsts.DbTablePrefix + "IncidentMasters");
 
                 b.ConfigureByConvention();
 
@@ -44,6 +44,18 @@ namespace Sample.Demo.EntityFrameworkCore
                     .HasMaxLength(IncidentConsts.MaxNameLength);
 
                 b.HasIndex(x => x.IncidentNo);
+            });
+
+            builder.Entity<IncidentDetail>(b =>
+            {
+                b.ToTable(DemoConsts.DbTablePrefix + "IncidentDetails");
+                b.ConfigureByConvention();
+            });
+
+            builder.Entity<ReviewDetail>(b =>
+            {
+                b.ToTable(DemoConsts.DbTablePrefix + "ReviewDetails");
+                b.ConfigureByConvention();
             });
         }
     }

@@ -12,6 +12,8 @@ namespace Sample.Demo.Incident
     {
         public int IncidentMasterId { get; set; }
 
+        public string IncidentNo { get; set; }
+
         public string IncidentDescr { get; set; }
 
         public int? IncidentType { get; set; }
