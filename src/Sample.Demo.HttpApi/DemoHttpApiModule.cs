@@ -48,10 +48,11 @@ namespace Sample.Demo
         {
             Dictionary<string, string> messages = _languageTextAppService.GetAllValuesFromDatabaseForCulture(cultureName);
 
-            foreach (var message in messages)
-            {
-                dictionary[message.Key] = new LocalizedString(message.Key, message.Value);
-            }
+            if (messages != null && messages.Count > 0)
+                foreach (var message in messages)
+                {
+                    dictionary[message.Key] = new LocalizedString(message.Key, message.Value);
+                }
         }
 
         public LocalizedString GetOrNull(string cultureName, string name)

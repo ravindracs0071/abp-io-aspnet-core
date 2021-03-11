@@ -36,14 +36,14 @@ namespace Sample.Demo.Localization
         [UnitOfWork(IsDisabled = false)]
         public Dictionary<string, string> GetAllValuesFromDatabaseForCulture(string cultureName)
         {
-            var languageTexts = _languageRepository.GetListAsync().Result;
+            var languageTexts = _languageRepository.GetListAsync()?.Result;
             if (_currentUser.TenantId != null && _currentUser.TenantId.HasValue.Equals(true))
             {
-                return languageTexts.Where(l => l.LanguageName == cultureName && l.TenantId == _currentUser.TenantId)?.ToDictionary(l => l.Key, l => l.Value);
+                return languageTexts?.Where(l => l.LanguageName == cultureName && l.TenantId == _currentUser.TenantId)?.ToDictionary(l => l.Key, l => l.Value);
             }
             else
             {
-                return languageTexts.Where(l => l.LanguageName == cultureName)?.ToDictionary(l => l.Key, l => l.Value);
+                return languageTexts?.Where(l => l.LanguageName == cultureName)?.ToDictionary(l => l.Key, l => l.Value);
             }
         }
 

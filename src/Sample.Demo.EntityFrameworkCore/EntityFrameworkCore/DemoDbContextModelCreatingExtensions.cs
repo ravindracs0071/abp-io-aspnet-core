@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
 using Sample.Demo.Localization;
+using Sample.Demo.Incident;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace Sample.Demo.EntityFrameworkCore
@@ -30,6 +31,19 @@ namespace Sample.Demo.EntityFrameworkCore
             {
                 b.ToTable(DemoConsts.DbTablePrefix + "LanguageTexts");
                 b.ConfigureByConvention();
+            });
+
+            builder.Entity<IncidentMaster>(b =>
+            {
+                b.ToTable(DemoConsts.DbTablePrefix + "IncidentManagers");
+
+                b.ConfigureByConvention();
+
+                b.Property(x => x.IncidentNo)
+                    .IsRequired()
+                    .HasMaxLength(IncidentConsts.MaxNameLength);
+
+                b.HasIndex(x => x.IncidentNo);
             });
         }
     }
