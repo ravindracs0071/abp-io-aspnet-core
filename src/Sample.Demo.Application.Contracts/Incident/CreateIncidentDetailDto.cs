@@ -1,10 +1,11 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Sample.Demo.Incident
 {
-    public class CreateIncidentDetailDto
+    public class CreateIncidentDetailDto : IValidatableObject
     {
         [Required]
         public int IncidentMasterId { get; set; }
@@ -23,5 +24,20 @@ namespace Sample.Demo.Incident
         public DateTime? OccurenceDate { get; set; }
 
         public string ReportTo { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(
+            ValidationContext validationContext)
+        {
+            //Interface should be declared in Contracts
+            //var incidentService = (Incident.IIncidentDetailAppService)validationContext.GetService(typeof(Incident.IIncidentDetailAppService));
+
+            if (!IncidentType.HasValue)
+            {
+                yield return new ValidationResult(
+                    "IncidentType can not be null!",
+                    new[] { "IncidentType" }
+                );
+            }
+        }
     }
 }
