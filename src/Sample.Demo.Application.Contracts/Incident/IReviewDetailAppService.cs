@@ -9,6 +9,8 @@ namespace Sample.Demo.Incident
     {
         Task<ReviewDetailDto> GetAsync(Guid id);
 
+        Task<ReviewDetailDto> GetByIncidentDetailIdAsync(Guid id);
+
         Task<PagedResultDto<ReviewDetailDto>> GetListAsync(GetReviewDetailListDto input);
 
         Task<ReviewDetailDto> CreateAsync(CreateReviewDetailDto input);

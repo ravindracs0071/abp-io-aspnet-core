@@ -28,6 +28,18 @@ namespace Sample.Demo.Incident
             return ObjectMapper.Map<ReviewDetail, ReviewDetailDto>(reviewDetail);
         }
 
+        public async Task<ReviewDetailDto> GetByIncidentDetailIdAsync(Guid id)
+        {
+            var reviewDetailCount = await _reviewDetailRepository.CountAsync(x => x.IncidentDetailId == id);
+            
+            if (reviewDetailCount == 0)
+                return null;
+
+            var reviewDetail = await _reviewDetailRepository.GetAsync(x => x.IncidentDetailId == id);
+
+            return ObjectMapper.Map<ReviewDetail, ReviewDetailDto>(reviewDetail);
+        }
+
         public async Task<PagedResultDto<ReviewDetailDto>> GetListAsync(GetReviewDetailListDto input)
         {
             if (input.Sorting.IsNullOrWhiteSpace())
@@ -71,11 +83,26 @@ namespace Sample.Demo.Incident
         {
             var review = await _reviewDetailRepository.GetAsync(id);
 
-            //if (incident.IncidentNo != input.IncidentNo)
-            //{
-            //    await _reviewDetailManager.ChangeNameAsync(incident, input.IncidentNo);
-            //}
-            //TODO change methods
+            if (review.IsIncidentValid != input.IsIncidentValid)
+            {
+                review.IsIncidentValid = input.IsIncidentValid;
+            }
+
+            if (review.Comments != input.Comments)
+            {
+                review.Comments = input.Comments;
+            }
+
+            if (review.IncidentStatus != input.IncidentStatus)
+            {
+                review.IncidentStatus = input.IncidentStatus;
+            }
+
+            if (review.EndDate != input.EndDate)
+            {
+                review.EndDate = input.EndDate;
+            }
+
             await _reviewDetailRepository.UpdateAsync(review);
         }
 

@@ -21,6 +21,8 @@ namespace Sample.Demo.Incident
         public DateTime? OccurenceDate { get; set; }
 
         public string ReportTo { get; set; }
+
+        public string Status { get; set; }
     }
 
     public class ReviewDetailDto : EntityDto<Guid>

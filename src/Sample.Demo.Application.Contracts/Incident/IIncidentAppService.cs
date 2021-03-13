@@ -13,6 +13,8 @@ namespace Sample.Demo.Incident
 
         Task<IncidentDto> CreateAsync();
 
+        Task<IncidentDto> UpdateAsync(int id, UpdateIncidentDto input);
+        
         Task DeleteAsync(int id);
     }
 }

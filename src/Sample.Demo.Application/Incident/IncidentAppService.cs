@@ -5,6 +5,7 @@ using Sample.Demo.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Uow;
 
 namespace Sample.Demo.Incident
 {
@@ -32,7 +33,7 @@ namespace Sample.Demo.Incident
         {
             if (input.Sorting.IsNullOrWhiteSpace())
             {
-                input.Sorting = nameof(IncidentMaster.IncidentNo);
+                input.Sorting = nameof(IncidentMaster.CreationTime);
             }
 
             var incidents = await _incidentRepository.GetListAsync(
@@ -41,6 +42,7 @@ namespace Sample.Demo.Incident
                 input.Sorting,
                 input.Filter
             );
+
 
             var totalCount = input.Filter == null
                 ? await _incidentRepository.CountAsync()
@@ -53,27 +55,39 @@ namespace Sample.Demo.Incident
         }
 
         [Authorize(DemoPermissions.Incidents.Create)]
+        [UnitOfWork]
         public async Task<IncidentDto> CreateAsync()
         {
-            var guid = new Guid().ToString();
-            var incident = await _incidentManager.CreateAsync(guid);
+            var incident = await _incidentManager.CreateAsync(String.Format("INC-TEMP-{0}", DateTime.UtcNow.ToString("ddMMyyyyHHmmssfff")));
 
-            await _incidentRepository.InsertAsync(incident);
+            await _incidentRepository.InsertAsync(incident, autoSave: true);
+
+            var incidentMaster = await _incidentRepository.GetAsync(incident.Id);
+
+            string incidentNo = String.Format("INC-{0:0000}", incident.Id);
+
+            await _incidentManager.ChangeNameAsync(incidentMaster, incidentNo);
+
+            await _incidentRepository.UpdateAsync(incident);
 
             return ObjectMapper.Map<IncidentMaster, IncidentDto>(incident);
         }
 
         [Authorize(DemoPermissions.Incidents.Edit)]
-        public async Task UpdateAsync(int id, UpdateIncidentDto input)
+        public async Task<IncidentDto> UpdateAsync(int id, UpdateIncidentDto input)
         {
             var incident = await _incidentRepository.GetAsync(id);
 
+            input.IncidentNo = String.Format("INC-{0:0000}", id);
+            
             if (incident.IncidentNo != input.IncidentNo)
             {
                 await _incidentManager.ChangeNameAsync(incident, input.IncidentNo);
             }
 
             await _incidentRepository.UpdateAsync(incident);
+
+            return ObjectMapper.Map<IncidentMaster, IncidentDto>(incident);
         }
 
         [Authorize(DemoPermissions.Incidents.Delete)]

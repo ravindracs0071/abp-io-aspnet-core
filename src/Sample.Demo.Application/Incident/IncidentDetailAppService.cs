@@ -5,6 +5,7 @@ using Sample.Demo.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
+using System.Linq;
 
 namespace Sample.Demo.Incident
 {
@@ -14,18 +15,28 @@ namespace Sample.Demo.Incident
         private readonly IIncidentDetailRepository _incidentDetailRepository;
         private readonly IncidentDetailManager _incidentDetailManager;
 
+        private readonly IIncidentRepository _incidentRepository;
+        private readonly IReviewDetailRepository _reviewDetailRepository;
+
         public IncidentDetailAppService(
             IIncidentDetailRepository incidentDetailRepository,
-            IncidentDetailManager incidentDetailManager)
+            IncidentDetailManager incidentDetailManager,
+            IIncidentRepository incidentRepository,
+            IReviewDetailRepository reviewDetailRepository)
         {
             _incidentDetailRepository = incidentDetailRepository;
             _incidentDetailManager = incidentDetailManager;
+            _incidentRepository = incidentRepository;
+            _reviewDetailRepository = reviewDetailRepository;
          }
 
         public async Task<IncidentDetailDto> GetAsync(Guid id)
         {
             var incident = await _incidentDetailRepository.GetAsync(id);
-            return ObjectMapper.Map<IncidentDetail, IncidentDetailDto>(incident);
+            var incidentMaster = await _incidentRepository.GetAsync(i => i.Id == incident.IncidentMasterId);
+            var incidentDetailDto = ObjectMapper.Map<IncidentDetail, IncidentDetailDto>(incident);
+            incidentDetailDto.IncidentNo = incidentMaster.IncidentNo;
+            return incidentDetailDto;
         }
 
         public async Task<PagedResultDto<IncidentDetailDto>> GetListAsync(GetIncidentDetailListDto input)
@@ -46,9 +57,29 @@ namespace Sample.Demo.Incident
                 ? await _incidentDetailRepository.CountAsync()
                 : await _incidentDetailRepository.CountAsync(incident => incident.IncidentDescr.Contains(input.Filter));
 
+            IQueryable<IncidentMaster> incidentMasters = await _incidentRepository.GetQueryableAsync();
+
+            IQueryable<ReviewDetail> reviewDetails = await _reviewDetailRepository.GetQueryableAsync();
+
+            var incidentDetailDtos = from incidentDetail in incidents
+                    join incidentMaster in incidentMasters.ToList() on incidentDetail.IncidentMasterId equals incidentMaster.Id
+                    join reviewDetail in reviewDetails.ToList() on incidentDetail.Id equals reviewDetail.IncidentDetailId into reviewDetailTemp
+                    from reviewDetail in reviewDetailTemp.DefaultIfEmpty()
+                    select new IncidentDetailDto
+                    {
+                        Id = incidentDetail.Id,
+                        IncidentMasterId = incidentMaster.Id,
+                        IncidentNo = incidentMaster.IncidentNo,
+                        IncidentDescr = incidentDetail.IncidentDescr,
+                        IncidentType = incidentDetail.IncidentType,
+                        OccurenceDate = incidentDetail.OccurenceDate,
+                        ReportTo = incidentDetail.ReportTo,
+                        Status = ((reviewDetailTemp == null || reviewDetailTemp.Count() == 0) ? "Pending Assign" : reviewDetailTemp.LastOrDefault().IncidentStatus)
+                    };
+            //ObjectMapper.Map<List<IncidentDetail>, List<IncidentDetailDto>>(incidents) - return
             return new PagedResultDto<IncidentDetailDto>(
                 totalCount,
-                ObjectMapper.Map<List<IncidentDetail>, List<IncidentDetailDto>>(incidents)
+                incidentDetailDtos.ToList()
             );
         }
 
@@ -67,11 +98,26 @@ namespace Sample.Demo.Incident
         {
             var incident = await _incidentDetailRepository.GetAsync(id);
 
-            //if (incident.IncidentDescr != input.IncidentDescr)
-            //{
-            //    await _incidentDetailManager.ChangeNameAsync(incident, input.IncidentNo);
-            //}
-            //TODO method
+            if (incident.IncidentDescr != input.IncidentDescr)
+            {
+                incident.IncidentDescr = input.IncidentDescr;
+            }
+
+            if (incident.IncidentType != input.IncidentType)
+            {
+                incident.IncidentType = input.IncidentType;
+            }
+
+            if (incident.OccurenceDate != input.OccurenceDate)
+            {
+                incident.OccurenceDate = input.OccurenceDate;
+            }
+
+            if (incident.ReportTo != input.ReportTo)
+            {
+                incident.ReportTo = input.ReportTo;
+            }
+
             await _incidentDetailRepository.UpdateAsync(incident);
         }
 

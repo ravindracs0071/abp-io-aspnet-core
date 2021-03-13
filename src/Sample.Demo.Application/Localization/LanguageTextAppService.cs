@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Threading;
 using Volo.Abp.Uow;
 using Volo.Abp.Users;
 
@@ -22,7 +23,8 @@ namespace Sample.Demo.Localization
         [UnitOfWork(IsDisabled = false)]
         public Dictionary<string, string> GetAllValuesFromDatabase(string sourceName, string languageName)
         {
-            var languageTexts = _languageRepository.GetListAsync().Result;
+            List<ApplicationLanguageText> languageTexts = AsyncHelper.RunSync(() => _languageRepository.GetListAsync());
+            
             if (_currentUser.TenantId != null && _currentUser.TenantId.HasValue.Equals(true)) 
             {
                 return languageTexts.Where(l => l.Source == sourceName && l.LanguageName == languageName && l.TenantId == _currentUser.TenantId)?.ToDictionary(l => l.Key, l => l.Value);
@@ -36,7 +38,8 @@ namespace Sample.Demo.Localization
         [UnitOfWork(IsDisabled = false)]
         public Dictionary<string, string> GetAllValuesFromDatabaseForCulture(string cultureName)
         {
-            var languageTexts = _languageRepository.GetListAsync()?.Result;
+            List<ApplicationLanguageText> languageTexts = AsyncHelper.RunSync(() => _languageRepository.GetListAsync());
+
             if (_currentUser.TenantId != null && _currentUser.TenantId.HasValue.Equals(true))
             {
                 return languageTexts?.Where(l => l.LanguageName == cultureName && l.TenantId == _currentUser.TenantId)?.ToDictionary(l => l.Key, l => l.Value);
