@@ -2,10 +2,25 @@
   "culture": "en",
   "texts": {
     "Menu:Home": "Home",
+    "Menu:Incident": "Incident management",
+    "SubMenu:Incident": "Incidents",
     "Welcome": "Welcome",
     "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information, visit abp.io.",
-    "Menu:Incidents": "Incident Management",
     "NewIncident": "Create",
-    "Incident:Review":  "Review : Incident"
+    "Incident:Review": "Review : Incident",
+    "IncidentNo": "Incident No.",
+    "Status": "Status",
+    "ReportTo": "Report To",
+    "OccurenceDate": "Occurence Date",
+    "IncidentDescr": "Description",
+    "IncidentType": "Incident Type",
+    "IncidentValidity": "Is Incident Valid",
+    "ReviewerComments": "Reviewer Comments",
+    "IncidentEndOn": "End On",
+    "Permission:Demo": "Demo",
+    "Permission:Incidents": "Incident management",
+    "Permission:Incidents.Create": "Create",
+    "Permission:Incidents.Edit": "Edit",
+    "Permission:Incidents.Delete": "Delete"
   }
 }
