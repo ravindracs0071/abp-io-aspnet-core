@@ -57,6 +57,18 @@ namespace Sample.Demo.EntityFrameworkCore
                 b.ToTable(DemoConsts.DbTablePrefix + "ReviewDetails");
                 b.ConfigureByConvention();
             });
+
+            builder.Entity<PropertySetting.PropertySetting>(b =>
+            {
+                b.ToTable(DemoConsts.DbTablePrefix + "PropertySettings");
+                b.ConfigureByConvention();
+                b.Property(x => x.Name).HasMaxLength(PropertySetting.PropertySettingConsts.MaxNameLength).IsRequired();
+
+                b.Property(x => x.ProviderName).HasMaxLength(PropertySetting.PropertySettingConsts.MaxNameLength);
+                b.Property(x => x.ProviderKey).HasMaxLength(PropertySetting.PropertySettingConsts.MaxNameLength);
+
+                b.HasIndex(x => new { x.Name, x.ProviderName, x.ProviderKey });
+            });
         }
     }
 }

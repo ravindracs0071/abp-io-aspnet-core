@@ -33,6 +33,8 @@ namespace Sample.Demo.EntityFrameworkCore
 
         public DbSet<Incident.ReviewDetail> ReviewDetails { get; set; }
 
+        public DbSet<PropertySetting.PropertySetting> PropertySettings { get; set; }
+        
         /* Add DbSet properties for your Aggregate Roots / Entities here.
          * Also map them inside DemoDbContextModelCreatingExtensions.ConfigureDemo
          */
