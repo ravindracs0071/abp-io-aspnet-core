@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Sample.Demo.MultiTenancy;
+using System;
+using System.Collections.Generic;
 using Volo.Abp.AuditLogging;
 using Volo.Abp.BackgroundJobs;
 using Volo.Abp.Emailing;
@@ -38,9 +40,9 @@ namespace Sample.Demo
                 options.IsEnabled = MultiTenancyConsts.IsEnabled;
             });
 
-#if DEBUG
+            #if DEBUG
             context.Services.Replace(ServiceDescriptor.Singleton<IEmailSender, NullEmailSender>());
-#endif
+            #endif
         }
     }
 }

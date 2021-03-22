@@ -40,6 +40,23 @@ namespace Sample.Demo.PropertySetting
             Guid id,
             [NotNull] string name,
             [NotNull] string value,
+            [NotNull] string providerName = null,
+            [NotNull] string providerKey = null)
+        {
+            Check.NotNull(name, nameof(name));
+            Check.NotNull(value, nameof(value));
+
+            Id = id;
+            Name = name;
+            Value = value;
+            ProviderName = providerName;
+            ProviderKey = providerKey;
+        }
+
+        public PropertySetting(
+            Guid id,
+            [NotNull] string name,
+            [NotNull] string value,
             [NotNull] bool visible,
             [NotNull] bool requiredRegEx,
             [NotNull] string providerName = null,

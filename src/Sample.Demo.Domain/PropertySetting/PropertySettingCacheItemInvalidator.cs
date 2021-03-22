@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Volo.Abp.Caching;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Entities.Events;
@@ -18,6 +19,7 @@ namespace Sample.Demo.PropertySetting
         public virtual async Task HandleEventAsync(EntityChangedEventData<PropertySetting> eventData)
         {
             var cacheKey = CalculateCacheKey(
+                eventData.Entity.TenantId,
                 eventData.Entity.Name,
                 eventData.Entity.ProviderName,
                 eventData.Entity.ProviderKey
@@ -26,9 +28,9 @@ namespace Sample.Demo.PropertySetting
             await Cache.RemoveAsync(cacheKey);
         }
 
-        protected virtual string CalculateCacheKey(string name, string providerName, string providerKey)
+        protected virtual string CalculateCacheKey(Guid? tenantId, string name, string providerName, string providerKey)
         {
-            return PropertySettingCacheItem.CalculateCacheKey(name, providerName, providerKey);
+            return PropertySettingCacheItem.CalculateCacheKey(tenantId, name, providerName, providerKey);
         }
     }
 }
