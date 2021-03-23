@@ -25,7 +25,10 @@ namespace Sample.Demo.PropertySetting
                 PropertySettingNames.Incidents.OccurenceDate,
                 PropertySettingNames.Incidents.ReportTo,
                 PropertySettingNames.Incidents.Status,
-                PropertySettingNames.Incidents.Reviews.IncidentStatus
+                PropertySettingNames.Incidents.Reviews.IsIncidentValid,
+                PropertySettingNames.Incidents.Reviews.Comments,
+                PropertySettingNames.Incidents.Reviews.IncidentStatus,
+                PropertySettingNames.Incidents.Reviews.EndDate
             },
             ProviderName, null);
             return propSettings;

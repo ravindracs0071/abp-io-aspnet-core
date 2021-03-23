@@ -55,9 +55,24 @@ namespace Sample.Demo.PropertySetting
             public static class Reviews
             {
                 /// <summary>
-                /// Abp.Incidents.Status
+                /// Abp.Incidents.Reviews.IsIncidentValid
+                /// </summary>
+                public const string IsIncidentValid = "Demo.Incidents.Reviews.IsIncidentValid";
+
+                /// <summary>
+                /// Abp.Incidents.Reviews.Comments
+                /// </summary>
+                public const string Comments = "Demo.Incidents.Reviews.Comments";
+
+                /// <summary>
+                /// Abp.Incidents.Reviews.Status
                 /// </summary>
                 public const string IncidentStatus = "Demo.Incidents.Reviews.IncidentStatus";
+
+                /// <summary>
+                /// Abp.Incidents.Reviews.EndDate
+                /// </summary>
+                public const string EndDate = "Demo.Incidents.Reviews.EndDate";
             }
         }
     }
