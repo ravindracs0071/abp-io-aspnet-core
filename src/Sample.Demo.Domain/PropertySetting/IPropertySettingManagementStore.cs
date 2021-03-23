@@ -10,7 +10,7 @@ namespace Sample.Demo.PropertySetting
 
         Task<List<PropertySettingValue>> GetListAsync(string providerName, string providerKey);
 
-        Task<List<PropertySettingValue>> GetListAsync(string[] names, string providerName, string providerKey);
+        Task<Dictionary<string, PropertySettingValue>> GetListAsync(string[] names, string providerName, string providerKey);
 
         Task SetAsync(string name, string value, string providerName, string providerKey);
 

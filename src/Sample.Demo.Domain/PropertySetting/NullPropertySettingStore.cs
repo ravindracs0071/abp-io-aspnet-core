@@ -22,9 +22,9 @@ namespace Sample.Demo.PropertySetting
             return Task.FromResult((string) null);
         }
 
-        public Task<List<PropertySettingValue>> GetAllAsync(string[] names, string providerName, string providerKey)
+        public Task<Dictionary<string, PropertySettingValue>> GetAllAsync(string[] names, string providerName, string providerKey)
         {
-            return Task.FromResult(names.Select(x => new PropertySettingValue(x, null)).ToList());
+            return Task.FromResult(names.Select(x => new PropertySettingValue(x, null)).ToDictionary(x=>x.Name, x => x));
         }
     }
 }

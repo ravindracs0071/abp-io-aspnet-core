@@ -12,7 +12,7 @@ namespace Sample.Demo.PropertySetting
             [CanBeNull] string providerKey
         );
 
-        Task<List<PropertySettingValue>> GetAllAsync(
+        Task<Dictionary<string, PropertySettingValue>> GetAllAsync(
             [NotNull] string[] names,
             [CanBeNull] string providerName,
             [CanBeNull] string providerKey

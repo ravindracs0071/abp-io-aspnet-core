@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Sample.Demo.PropertySetting
 {
-    public class EntitySettingsAppService : DemoAppService
+    public class EntitySettingsAppService : DemoAppService, IEntitySettingsAppService
     {
         public const string ProviderName = "T";
         protected IPropertySettingManagementStore SettingStore { get; }
@@ -15,7 +15,7 @@ namespace Sample.Demo.PropertySetting
             SettingStore = settingStore;
         }
 
-        public virtual async Task<List<PropertySettingValue>> GetAsync() 
+        public virtual async Task<Dictionary<string, PropertySettingValue>> GetAsync() 
         {
             var propSettings = await SettingStore.GetListAsync(new string[] 
             {

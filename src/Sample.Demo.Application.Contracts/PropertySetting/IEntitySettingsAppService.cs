@@ -6,6 +6,6 @@ namespace Sample.Demo.PropertySetting
 {
     public interface IEntitySettingsAppService : IApplicationService
     {
-        Task<List<PropertySettingValue>> GetAsync();
+        Task<Dictionary<string, PropertySettingValue>> GetAsync();
     }
 }

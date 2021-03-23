@@ -34,11 +34,11 @@ namespace Sample.Demo.Incident
             //Interface should be declared in Contracts
             PropertySetting.IEntitySettingsAppService _entitySettingsService = (PropertySetting.IEntitySettingsAppService)validationContext.GetService(typeof(PropertySetting.IEntitySettingsAppService));
 
-            List<PropertySetting.PropertySettingValue> settingConfig = AsyncHelper.RunSync(() => _entitySettingsService.GetAsync());            
+            Dictionary<string, PropertySetting.PropertySettingValue> settingConfig = AsyncHelper.RunSync(() => _entitySettingsService.GetAsync());            
 
             if (settingConfig != null && settingConfig.Count > 0) 
             {
-                var checkIncidentType = settingConfig.FirstOrDefault(s => s.Name == PropertySetting.PropertySettingNames.Incidents.IncidentType);
+                PropertySetting.PropertySettingValue checkIncidentType = settingConfig[PropertySetting.PropertySettingNames.Incidents.IncidentType];
 
                 if (checkIncidentType.Visible)
                 {
@@ -48,7 +48,7 @@ namespace Sample.Demo.Incident
                     }
                 }
 
-                var checkOccurenceDate = settingConfig.FirstOrDefault(s => s.Name == PropertySetting.PropertySettingNames.Incidents.OccurenceDate);
+                PropertySetting.PropertySettingValue checkOccurenceDate = settingConfig[PropertySetting.PropertySettingNames.Incidents.OccurenceDate];
 
                 if (checkOccurenceDate.Visible)
                 {
@@ -58,7 +58,7 @@ namespace Sample.Demo.Incident
                     }
                 }
 
-                var checkReportTo = settingConfig.FirstOrDefault(s => s.Name == PropertySetting.PropertySettingNames.Incidents.ReportTo);
+                PropertySetting.PropertySettingValue checkReportTo = settingConfig[PropertySetting.PropertySettingNames.Incidents.ReportTo];
                 
                 if (checkReportTo.Visible && checkReportTo.RequiredRegEx)
                 {

@@ -113,16 +113,16 @@ namespace Sample.Demo.PropertySetting
         }
 
         [UnitOfWork]
-        public async Task<List<PropertySettingValue>> GetListAsync(string[] names, string providerName, string providerKey)
+        public async Task<Dictionary<string, PropertySettingValue>> GetListAsync(string[] names, string providerName, string providerKey)
         {
             Check.NotNullOrEmpty(names, nameof(names));
 
-            var result = new List<PropertySettingValue>();
+            var result = new Dictionary<string, PropertySettingValue>();
 
             if (names.Length == 1)
             {
                 var name = names.First();
-                result.Add(new PropertySettingValue(name, (await GetCacheItemAsync(name, providerName, providerKey)).Value));
+                result.Add(name, new PropertySettingValue(name, (await GetCacheItemAsync(name, providerName, providerKey)).Value));
                 return result;
             }
 
@@ -138,7 +138,8 @@ namespace Sample.Demo.PropertySetting
                     visible = item.Value.Visible;
                     requiredRegEx = item.Value.RequiredRegEx;
                 }
-                result.Add(new PropertySettingValue(GetSettingNameFormCacheKeyOrNull(item.Key), value, visible, requiredRegEx, regExRule));
+                string keyName = GetSettingNameFormCacheKeyOrNull(item.Key);
+                result.Add(keyName, new PropertySettingValue(keyName, value, visible, requiredRegEx, regExRule));
             }
 
             return result;

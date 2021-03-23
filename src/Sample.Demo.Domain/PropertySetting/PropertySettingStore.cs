@@ -19,7 +19,7 @@ namespace Sample.Demo.PropertySetting
             return ManagementStore.GetOrNullAsync(name, providerName, providerKey);
         }
 
-        public virtual Task<List<PropertySettingValue>> GetAllAsync(string[] names, string providerName, string providerKey)
+        public virtual Task<Dictionary<string, PropertySettingValue>> GetAllAsync(string[] names, string providerName, string providerKey)
         {
             return ManagementStore.GetListAsync(names, providerName, providerKey);
         }

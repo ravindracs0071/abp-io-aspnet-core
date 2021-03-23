@@ -27,11 +27,11 @@ namespace Sample.Demo.Incident
             //Interface should be declared in Contracts
             PropertySetting.IEntitySettingsAppService _entitySettingsService = (PropertySetting.IEntitySettingsAppService)validationContext.GetService(typeof(PropertySetting.IEntitySettingsAppService));
 
-            List<PropertySetting.PropertySettingValue> settingConfig = AsyncHelper.RunSync(() => _entitySettingsService.GetAsync());
+            Dictionary<string, PropertySetting.PropertySettingValue> settingConfig = AsyncHelper.RunSync(() => _entitySettingsService.GetAsync());
 
             if (settingConfig != null && settingConfig.Count > 0)
             {
-                var checkIncidentStatus = settingConfig.FirstOrDefault(s => s.Name == PropertySetting.PropertySettingNames.Incidents.Reviews.IncidentStatus);
+                PropertySetting.PropertySettingValue checkIncidentStatus = settingConfig[PropertySetting.PropertySettingNames.Incidents.Reviews.IncidentStatus];
 
                 if (checkIncidentStatus.Visible)
                 {
@@ -49,7 +49,7 @@ namespace Sample.Demo.Incident
                     }
                 }
 
-                var checkEndDate = settingConfig.FirstOrDefault(s => s.Name == PropertySetting.PropertySettingNames.Incidents.Reviews.EndDate);
+                PropertySetting.PropertySettingValue checkEndDate = settingConfig[PropertySetting.PropertySettingNames.Incidents.Reviews.EndDate];
 
                 if (checkEndDate.Visible)
                 {
